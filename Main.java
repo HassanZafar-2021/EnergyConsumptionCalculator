@@ -10,7 +10,10 @@ public class Main {
         String name = scanner.nextLine();
         System.out.print("Enter your location (city, state): ");
         String location = scanner.nextLine();
-        User user = new User(name, location);
+        System.out.print("Enter your electricity rate ($/kWh): ");
+        double electricityRate = scanner.nextDouble();
+        scanner.nextLine(); // Consume newline character
+        User user = new User(name, location, electricityRate);
 
         // Ask user for number of appliances
         int numAppliances = 0;
