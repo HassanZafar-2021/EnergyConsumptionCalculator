@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class main {
+public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Energy Consumption Calculator!");
@@ -10,21 +10,37 @@ public class main {
         String name = scanner.nextLine();
         System.out.print("Enter your location (city, state): ");
         String location = scanner.nextLine();
-        User user = new User(name, location);
+        System.out.print("Enter your electricity rate ($/kWh): ");
+        double electricityRate = scanner.nextDouble();
+        scanner.nextLine(); // Consume newline character
+        User user = new User(name, location, electricityRate);
 
-        // Ask user for appliance information
-        System.out.println("Enter information for each appliance you use:");
-        int numAppliances = 3; // Change this to the desired number of appliances
+        // Ask user for number of appliances
+        int numAppliances = 0;
+        boolean validInput = false;
+        while (!validInput) {
+            try {
+                System.out.print("Number of appliances: ");
+                String input = scanner.nextLine();
+                numAppliances = Integer.parseInt(input.trim());
+                validInput = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        }
+
+        // Gather information for each appliance
         for (int i = 0; i < numAppliances; i++) {
-            System.out.println("Appliance " + (i+1) + ":");
+            System.out.println("Appliance " + (i + 1) + ":");
             System.out.print("Name: ");
             String applianceName = scanner.nextLine();
             System.out.print("Power consumption per hour (in watts): ");
             double powerConsumption = scanner.nextDouble();
+            scanner.nextLine(); // Consume newline character after reading a double
             System.out.print("Usage per hour (in hours): ");
             double usagePerHour = scanner.nextDouble();
+            scanner.nextLine(); // Consume newline character after reading a double
             user.addAppliance(applianceName, powerConsumption, usagePerHour);
-            scanner.nextLine(); // Consume newline
         }
 
         // Calculate energy consumption and cost
@@ -36,5 +52,8 @@ public class main {
         // Open GUI for further calculations or visualization
         GUI gui = new GUI(user);
         gui.display();
+
+        // Close the scanner
+        scanner.close();
     }
 }
